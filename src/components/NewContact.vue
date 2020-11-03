@@ -147,22 +147,24 @@ export default {
   },
   computed: {},
   mounted () {
-    db.collection('contacts')
-      .where('slug', '==', this.$route.params.person)
-      .get()
-      .then((querySnapshot) => {
-        if (querySnapshot) {
-          documentRef['docId'] = querySnapshot.docs[0].id
-          querySnapshot.forEach((doc) => {
-            const resp = doc.data()
-            documentRef['slug'] = resp.slug
-            this.form.firstname = resp.firstname
-            this.form.lastname = resp.lastname
-            this.form.emailaddress = resp.emailaddress
-            this.form.phonenumber = resp.phonenumber
-          })
-        }
-      })
+    if (this.$route.params.person) {
+      db.collection('contacts')
+        .where('slug', '==', this.$route.params.person)
+        .get()
+        .then((querySnapshot) => {
+          if (querySnapshot) {
+            documentRef['docId'] = querySnapshot.docs[0].id
+            querySnapshot.forEach((doc) => {
+              const resp = doc.data()
+              documentRef['slug'] = resp.slug
+              this.form.firstname = resp.firstname
+              this.form.lastname = resp.lastname
+              this.form.emailaddress = resp.emailaddress
+              this.form.phonenumber = resp.phonenumber
+            })
+          }
+        })
+    }
   },
 
   methods: {

@@ -72,17 +72,21 @@ export default {
   components: {
     Jumper
   },
+
   data () {
     return {
       contacts: [],
       loading: true
     }
   },
-  created () {
-    this.getContact()
+
+  mounted () {
+    this.getContact();
   },
+
   methods: {
     async getContact () {
+      console.log('getContact -> getContact')
       db.collection('contacts')
         .get()
         .then((querySnapshot) => {
@@ -103,7 +107,12 @@ export default {
         })
     },
     deleteContact (id) {
-      db.collection('contacts').doc(id).delete()
+      db.collection('contacts')
+        .doc(id)
+        .delete()
+        .then((data) => {
+          window.location.reload()
+        })
     }
   },
 
